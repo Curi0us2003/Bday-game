@@ -89,6 +89,7 @@ function createGame() {
       len: rand(30, 110),
     })),
     best: 0,
+    crashes: 0,
   }
   resetRun(g)
   return g
@@ -584,6 +585,7 @@ export default function CarRaceGame({ onComplete, startingXP = 1250, gameSong })
     shards: 0,
     nearMiss: 0,
     countdown: 3,
+    crashes: 0,
     go: false,
     warn: false,
   })
@@ -862,6 +864,7 @@ export default function CarRaceGame({ onComplete, startingXP = 1250, gameSong })
             burst(g, e.x + e.w / 2, e.y + e.h, '#e7c75f', 12)
             if (g.health <= 0) {
               g.best = Math.max(g.best, Math.floor(g.distance))
+              g.crashes += 1
               g.boostHeld = false
               setMode('crashed')
             }
@@ -898,6 +901,7 @@ export default function CarRaceGame({ onComplete, startingXP = 1250, gameSong })
           shards: g.shards,
           nearMiss: g.nearMiss,
           countdown: Math.max(1, Math.ceil(g.countdown)),
+          crashes: g.crashes,
           go: g.go > 0,
           warn: g.health === 1 && g.mode === 'playing',
         })
@@ -1067,6 +1071,20 @@ export default function CarRaceGame({ onComplete, startingXP = 1250, gameSong })
             RETRY RUN {'↻'}
           </button>
           <div className="race-tip">or press ENTER</div>
+
+          {/* The letter is on the far side of this level — never let a hard
+              run be the reason someone does not reach it. */}
+          {ui.crashes >= 2 && (
+            <button
+              type="button"
+              className="race-skip"
+              onClick={() =>
+                onComplete?.({ xp: startingXP, distance: gameRef.current.best })
+              }
+            >
+              Skip ahead {'—'} there is more waiting {'→'}
+            </button>
+          )}
         </div>
       )}
 

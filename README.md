@@ -38,8 +38,22 @@ http://127.0.0.1:5000/api/health.
 - **Level 3 (highway race)** — `←`/`A` and `→`/`D` change lane, `Space` holds
   nitro, `P`/`Esc` pauses. On touch devices an on-screen pad appears, and
   tapping either half of the screen steers.
-- The debug panel is available with `F8` during development; individual scenes
-  are reachable at `/debug`.
+
+## Debug overlay (local only)
+
+Press **Alt+Shift+D** in `npm run dev` to open a panel that jumps straight to
+any scene, sets the final XP, and clears saved progress. There is also a small
+`DEV` button in the bottom-left corner.
+
+It lives in `src/debug/`, which is **gitignored**: it is never committed and
+never reaches a deployment. `src/App.jsx` loads it through `import.meta.glob`
+guarded by `import.meta.env.DEV`, which means
+
+- a clean clone (no `src/debug/`) still builds, and
+- `npm run build` contains no debug code at all — verified by grepping `dist/`.
+
+Because the folder is ignored, keep your own copy if you reinstall from a fresh
+clone.
 
 ## Content you can edit
 

@@ -219,7 +219,7 @@ export default function NetflixReward({ gameSong, onContinue }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.45 }}
-      className="relative min-h-screen overflow-hidden bg-[#050505] text-white"
+      className="relative min-h-screen bg-[#050505] text-white"
     >
       <header className="sticky top-0 z-40 flex h-16 items-center gap-7 bg-gradient-to-b from-black via-black/95 to-transparent px-5 md:px-10">
         <div className="font-sans text-2xl font-black tracking-[-0.08em] text-[#e50914]">N</div>
@@ -242,7 +242,7 @@ export default function NetflixReward({ gameSong, onContinue }) {
             src={mainVideo}
             className="h-full w-full object-cover"
             playsInline
-            preload="none"
+            preload="metadata"
             controlsList="nodownload noplaybackrate"
             onLoadedMetadata={() => syncCaptions(captions)}
             onError={() => setVideoError('VIDEO COULD NOT BE LOADED. CHECK THE MP4 FILE PATH.')}
@@ -376,6 +376,21 @@ export default function NetflixReward({ gameSong, onContinue }) {
           </div>
         )}
       </section>
+
+      {/* This page scrolls for several viewports and the only exit used to be
+          a button at the very bottom, so Level 03 was easy to miss entirely. */}
+      {onContinue && (
+        <div className="pointer-events-none sticky bottom-0 z-30 flex justify-end bg-gradient-to-t from-[#050505] via-[#050505]/85 to-transparent px-4 pb-5 pt-10 md:px-8">
+          <button
+            type="button"
+            onClick={onContinue}
+            className="pointer-events-auto group flex items-center gap-3 border border-red-600/70 bg-[#0d0507]/90 px-6 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-red-400 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur transition-all hover:border-red-500 hover:bg-red-600/15 hover:text-red-300"
+          >
+            Level 03
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </button>
+        </div>
+      )}
     </motion.main>
   )
 }

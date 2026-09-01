@@ -1,5 +1,4 @@
 import { Suspense, lazy, useCallback, useEffect, useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
 import BirthdayOpening from './BirthdayOpening.jsx'
 import GameAwakening from '../game/GameAwakening.jsx'
 import GameHUD from '../game/GameHUD.jsx'
@@ -65,6 +64,16 @@ export default function BirthdayExperience() {
   const song = useBirthdaySong('/assets/audio/happy-birthday.mp3')
   const gameSong = useBirthdaySong(gotTheme)
 
+  // Scenes differ wildly in height (the Netflix page scrolls for pages, the
+  // race is a fixed viewport). Without this, arriving at a short scene from a
+  // tall one leaves the window scrolled past it — which looked like the race
+  // "not opening".
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }, [phase])
+
   useEffect(() => {
     try {
       if (RESUMABLE.has(phase)) localStorage.setItem(PROGRESS_KEY, phase)
@@ -72,6 +81,31 @@ export default function BirthdayExperience() {
     } catch {
       /* storage unavailable — progress just won't survive a refresh */
     }
+  }, [phase])
+
+  // Dev-only bridge so the (gitignored) debug overlay can jump between
+  // scenes. `import.meta.env.DEV` is a compile-time constant, so this whole
+  // block is removed from a production build.
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    window.__archive = {
+      phase,
+      phases: [
+        'opening', 'awakening', 'mission', 'transition', 'level1', 'cake',
+        'level2prep', 'level2', 'level2reward', 'netflix', 'level3', 'final',
+        'memories', 'complete',
+      ],
+      setPhase,
+      setXP: (xp) => setLevel3Result({ xp, distance: 2500 }),
+      clearProgress: () => {
+        try {
+          localStorage.removeItem(PROGRESS_KEY)
+        } catch {
+          /* ignore */
+        }
+      },
+    }
+    window.dispatchEvent(new Event('archive:phase'))
   }, [phase])
 
   const restart = useCallback(() => {
@@ -92,7 +126,7 @@ export default function BirthdayExperience() {
       {phase !== 'opening' && <FlippablePlayerCard />}
 
       <Suspense fallback={<SceneLoader />}>
-        <AnimatePresence mode="sync" initial={false}>
+        <>
           {phase === 'opening' && (
             <BirthdayOpening
               key="opening"
@@ -246,7 +280,7 @@ export default function BirthdayExperience() {
               </button>
             </main>
           )}
-        </AnimatePresence>
+        </>
       </Suspense>
     </>
   )
