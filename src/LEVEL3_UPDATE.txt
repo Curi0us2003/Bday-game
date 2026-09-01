@@ -1,0 +1,24 @@
+LEVEL 3 UPDATE — THE IMPOSSIBLE RUN
+
+Rebuilt Level 3 as a focused 2D browser runner with a chase mechanic.
+
+Controls:
+- SPACE / W / UP: jump
+- S / DOWN: slide
+- SHIFT / E: selected character ability
+- R: restart after losing
+- M: developer shortcut to finish the run and test the ending
+
+Character selection matters:
+- The Disciplined One: Second Wind / absorbs one mistake
+- The Cinephile: Slow Motion
+- The Detective: Bat-Sense / highlights upcoming hazards
+- The Shadow Weaver: Void Step / phases through danger and pushes forward
+
+Run structure:
+- Phase 1: learn the rhythm
+- Phase 2: faster mixed hazards
+- Phase 3: final stretch with the chaser closing in
+- Finish at 900m
+
+No new image assets or sprite sheets are required for this prototype. The runner is drawn as a cohesive animated comic-style figure so the game does not depend on cropped character portraits.

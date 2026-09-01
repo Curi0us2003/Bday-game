@@ -1,0 +1,30 @@
+[
+  {
+    "id": "close-2025-06",
+    "date": "2025-06",
+    "exact": false,
+    "title": "Became close",
+    "description": ""
+  },
+  {
+    "id": "proposal-2025-09",
+    "date": "2025-09",
+    "exact": false,
+    "title": "He proposed",
+    "description": ""
+  },
+  {
+    "id": "milestone-2025-11",
+    "date": "2025-11",
+    "exact": false,
+    "title": "In-person milestone",
+    "description": "Exact date to be confirmed"
+  },
+  {
+    "id": "official-2026-02",
+    "date": "2026-02",
+    "exact": false,
+    "title": "\"I love you\" — officially us",
+    "description": ""
+  }
+]

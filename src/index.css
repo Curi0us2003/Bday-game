@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-line;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    min-height: 100%;
+    background: #060608;
+  }
+
+  body {
+    @apply bg-void text-bone font-sans antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-bone;
+  }
+
+  /* Visible keyboard focus everywhere — noir, not neon */
+  :focus-visible {
+    outline: 1px solid theme('colors.gold.DEFAULT');
+    outline-offset: 3px;
+  }
+
+  /* Respect reduced-motion preferences site-wide */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Archive-label style used for system text, dates, stats, mission objectives */
+  .label-mono {
+    @apply font-mono text-xs uppercase tracking-widest2 text-ash;
+  }
+
+  .heading-display {
+    @apply font-display font-medium text-bone;
+  }
+}
