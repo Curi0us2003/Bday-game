@@ -1,0 +1,490 @@
+.car-race {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #05060a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.car-race .race-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* faint scanlines to match the rest of the archive look */
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0 2px,
+    rgba(0, 0, 0, 0.16) 2px 3px
+  );
+  background-blend-mode: overlay;
+}
+
+/* ------------------------------------------------------------- progress bar */
+/* Full-width strip at the very top: reads instantly, and never collides with
+   the player card (top-left) or the music control (top-centre). */
+.car-race .race-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(231, 199, 95, 0.12);
+  z-index: 30;
+}
+
+.car-race .race-progress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(231, 199, 95, 0.5), #e7c75f);
+  box-shadow: 0 0 12px rgba(231, 199, 95, 0.7);
+  transition: width 0.15s linear;
+}
+
+/* --------------------------------------------------------------------- HUD */
+.car-race .race-hud {
+  position: absolute;
+  z-index: 30;
+  border: 1px solid rgba(231, 199, 95, 0.22);
+  background: rgba(6, 7, 10, 0.72);
+  backdrop-filter: blur(8px);
+  padding: 0.7rem 0.85rem;
+  min-width: 172px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.car-race .race-hud-top {
+  top: 1.6rem;
+  right: 1.5rem;
+  text-align: right;
+}
+
+.car-race .race-hud-bottom {
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+
+.car-race .race-hud-label {
+  font-size: 0.5rem;
+  color: #8f8f8f;
+}
+
+.car-race .race-hud-big {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e7c75f;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.car-race .race-hud-big em {
+  display: block;
+  font-style: normal;
+  font-size: 0.5rem;
+  color: #8f8f8f;
+  letter-spacing: 0.18em;
+  margin-top: 0.15rem;
+}
+
+.car-race .race-hud-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.5rem;
+  color: #8f8f8f;
+  margin-top: 0.45rem;
+}
+
+.car-race .race-hud-row b {
+  color: #faf9f6;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.car-race .race-hud-sub {
+  color: #6f6f6f;
+  letter-spacing: 0.16em;
+}
+
+.car-race .race-hearts {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: #e7c75f;
+}
+
+.car-race .race-hearts em {
+  font-style: normal;
+  opacity: 0.28;
+}
+
+.car-race .race-hearts.is-warn {
+  color: #ff6b6b;
+  animation: race-warn 0.7s infinite;
+}
+
+@keyframes race-warn {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.car-race .race-boost {
+  height: 5px;
+  margin-top: 0.4rem;
+  background: rgba(231, 199, 95, 0.1);
+  border: 1px solid rgba(231, 199, 95, 0.16);
+}
+
+.car-race .race-boost i {
+  display: block;
+  height: 100%;
+  background: rgba(231, 199, 95, 0.3);
+  transition: width 0.1s linear;
+}
+
+.car-race .race-boost.is-ready i {
+  background: linear-gradient(90deg, #ff9d4d, #e7c75f);
+  box-shadow: 0 0 10px rgba(231, 199, 95, 0.6);
+}
+
+/* ------------------------------------------------------------------- hints */
+.car-race .race-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  font-size: 0.5rem;
+  color: #6f6f6f;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  animation: race-fade-hint 9s forwards;
+}
+
+.car-race .race-hint b {
+  color: #e7c75f;
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+
+@keyframes race-fade-hint {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.22;
+  }
+}
+
+/* --------------------------------------------------------- touch controls */
+.car-race .race-touch {
+  position: absolute;
+  bottom: 1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 32;
+  display: none;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.car-race .race-touch button {
+  width: 68px;
+  height: 58px;
+  border: 1px solid rgba(231, 199, 95, 0.35);
+  background: rgba(6, 7, 10, 0.7);
+  color: #e7c75f;
+  font-size: 1.1rem;
+  font-family: inherit;
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+}
+
+.car-race .race-touch button:active {
+  background: rgba(231, 199, 95, 0.18);
+}
+
+.car-race .race-touch .race-touch-boost {
+  width: 84px;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  border-color: rgba(255, 157, 77, 0.5);
+  color: #ff9d4d;
+}
+
+/* Only surface the on-screen pad where there is no keyboard. */
+@media (hover: none) and (pointer: coarse) {
+  .car-race .race-touch {
+    display: flex;
+  }
+  .car-race .race-hint {
+    display: none;
+  }
+  .car-race .race-hud {
+    min-width: 140px;
+    padding: 0.55rem 0.65rem;
+  }
+  .car-race .race-hud-bottom {
+    bottom: 6rem;
+  }
+}
+
+/* ---------------------------------------------------------------- countdown */
+.car-race .race-countdown {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: clamp(5rem, 18vw, 12rem);
+  font-weight: 700;
+  color: #e7c75f;
+  text-shadow: 0 0 60px rgba(231, 199, 95, 0.55);
+  animation: race-count 1s ease-out forwards;
+}
+
+.car-race .race-go {
+  color: #4ade80;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 60px rgba(74, 222, 128, 0.55);
+  animation: race-count 0.9s ease-out forwards;
+}
+
+@keyframes race-count {
+  0% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+/* ---------------------------------------------------------------- overlays */
+.car-race .race-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* was `items-align` — the overlay never centred */
+  justify-content: center;
+  gap: 0.9rem;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  overflow-y: auto;
+  background: radial-gradient(
+      ellipse at center,
+      rgba(10, 10, 14, 0.82) 0%,
+      rgba(4, 5, 8, 0.97) 70%
+    );
+  animation: race-in 0.45s ease-out;
+}
+
+@keyframes race-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.car-race .race-overlay-soft {
+  background: rgba(4, 5, 8, 0.86);
+}
+
+.car-race .race-kicker {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #e7c75f;
+}
+
+.car-race .race-overlay-bad .race-kicker {
+  color: #ff6b6b;
+}
+
+.car-race .race-overlay-good .race-kicker {
+  color: #4ade80;
+}
+
+.car-race h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 6vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #faf9f6;
+}
+
+.car-race .race-overlay p {
+  margin: 0;
+  max-width: 30rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #9a9a9a;
+  letter-spacing: 0.04em;
+}
+
+.car-race .race-brief {
+  width: min(24rem, 100%);
+  margin-top: 0.4rem;
+  border: 1px solid rgba(231, 199, 95, 0.22);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.9rem 1rem;
+  text-align: left;
+}
+
+.car-race .race-brief-title {
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  color: #e7c75f;
+  margin-bottom: 0.65rem;
+}
+
+.car-race .race-brief ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.car-race .race-brief li {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+}
+
+.car-race .race-brief li b {
+  color: #e7c75f;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.car-race .race-brief li span {
+  color: #9a9a9a;
+}
+
+.car-race .race-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(7.5rem, 1fr));
+  gap: 0.55rem;
+  margin: 0.5rem 0 0.2rem;
+}
+
+.car-race .race-stats div {
+  border: 1px solid rgba(231, 199, 95, 0.18);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+}
+
+.car-race .race-stats span {
+  display: block;
+  font-size: 0.45rem;
+  letter-spacing: 0.24em;
+  color: #7a7a7a;
+  text-transform: uppercase;
+}
+
+.car-race .race-stats b {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #faf9f6;
+  font-variant-numeric: tabular-nums;
+}
+
+.car-race .race-xp {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
+}
+
+.car-race .race-btn {
+  margin-top: 0.5rem;
+  padding: 0.8rem 2.1rem;
+  border: 1px solid rgba(231, 199, 95, 0.5);
+  background: transparent;
+  color: #e7c75f;
+  font-family: inherit;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.car-race .race-btn:hover {
+  background: rgba(231, 199, 95, 0.12);
+  border-color: #e7c75f;
+  transform: translateY(-1px);
+}
+
+.car-race .race-overlay-bad .race-btn {
+  border-color: rgba(255, 107, 107, 0.5);
+  color: #ff6b6b;
+}
+
+.car-race .race-overlay-bad .race-btn:hover {
+  background: rgba(255, 107, 107, 0.12);
+  border-color: #ff6b6b;
+}
+
+.car-race .race-overlay-good .race-btn {
+  border-color: rgba(74, 222, 128, 0.5);
+  color: #4ade80;
+}
+
+.car-race .race-overlay-good .race-btn:hover {
+  background: rgba(74, 222, 128, 0.12);
+  border-color: #4ade80;
+}
+
+.car-race .race-tip {
+  font-size: 0.5rem;
+  letter-spacing: 0.22em;
+  color: #6f6f6f;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .car-race .race-hearts.is-warn,
+  .car-race .race-hint {
+    animation: none;
+  }
+}

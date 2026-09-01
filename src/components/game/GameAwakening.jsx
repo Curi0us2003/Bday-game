@@ -5,7 +5,7 @@ import { birthdayConfig } from '../../data/birthdayConfig.js'
 import { gameConfig } from '../../data/gameConfig.js'
 import GameMusicControl from './GameMusicControl.jsx'
 
-const HOLD_MS = 1500
+const HOLD_MS = 2500
 
 export default function GameAwakening({ onComplete, gameSong }) {
   const lines = [

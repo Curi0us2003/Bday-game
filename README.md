@@ -1,9 +1,15 @@
 # THE ARCHIVE
 
-A cinematic, personalized birthday experience. Layer 1 (project foundation)
-of 16 — see build plan below.
+A cinematic, personalized birthday game. The experience runs:
 
-## Setup
+`opening (India map + distance) → awakening → mission → date puzzle → cake →
+movie crossword → Netflix reward → highway race → ending → memory lane →
+letter → archive sealed`
+
+Progress is saved to `localStorage`, so an accidental refresh offers
+"continue where you left off" on the landing page.
+
+## Frontend development
 
 ```bash
 npm install
@@ -12,18 +18,60 @@ npm run dev
 
 Then open the local URL Vite prints (usually http://localhost:5173).
 
-## What's here right now (Layer 1 + design tokens)
+## Production-style local server
 
-- Vite + React + Tailwind + Framer Motion + react-router-dom, wired up
-- Dark cinematic color palette and type scale in `tailwind.config.js`
-- Global styles, focus states, and reduced-motion handling in `src/index.css`
-- Folder structure for every future layer (components, pages, data, assets)
-- A minimal `Home` page confirming everything renders correctly
-- `src/data/character.json`, `movies.json`, `memories.json`, `easterEggs.json`
-  as the separation between content and presentation
+The Python server serves the compiled frontend and supports client-side routes.
 
-## Not built yet
+```bash
+pip install -r requirements.txt
+npm run build
+python server.py
+```
 
-Boot sequence, dashboard, character profile, movie archive, Batman protocol,
-Nioh profile, story map, candle scene, final message, audio message, and
-easter eggs are all future layers — built one at a time, on request.
+Open http://127.0.0.1:5000. The health check is available at
+http://127.0.0.1:5000/api/health.
+
+## Controls
+
+- **Level 1** — keypad, enter the date.
+- **Level 2** — solve the movie crossword.
+- **Level 3 (highway race)** — `←`/`A` and `→`/`D` change lane, `Space` holds
+  nitro, `P`/`Esc` pauses. On touch devices an on-screen pad appears, and
+  tapping either half of the screen steers.
+- The debug panel is available with `F8` during development; individual scenes
+  are reachable at `/debug`.
+
+## Content you can edit
+
+| What | Where |
+| --- | --- |
+| Name, cities, road distance, copy, candle count, mic sensitivity | `src/data/birthdayConfig.js` |
+| Mission text, HUD labels | `src/data/gameConfig.js` |
+| India outline, city coordinates, projection | `src/data/indiaGeo.js` |
+| Memory photos | `src/assets/memories/01.webp` … `11.webp` |
+| Memory captions | `src/components/game/MemoryJourney.jsx` |
+| Letter text | `src/components/game/MemoryJourney.jsx` |
+
+The great-circle distance and bearing on the landing page are computed from the
+coordinates in `indiaGeo.js` — only `roadKm` in `birthdayConfig.js` is a
+hand-entered figure.
+
+## Optional audio
+
+Two audio files are loaded from `public/` and are **not** in the repo. The site
+works without them (silently); drop them in to enable sound:
+
+```
+public/assets/audio/happy-birthday.mp3   # cake scene
+public/assets/audio/click.mp3            # gift button
+```
+
+The game theme (`src/assets/sounds/got-theme.mp3`) and the memory-lane track
+(`saibo.mp3`) are bundled and work out of the box.
+
+## Images
+
+Photos and posters are stored as WebP sized for their actual display size
+(memories 1200px, posters 700px tall, player cards 1240px tall). If you replace
+one, keep it near those dimensions — full-resolution phone photos were making
+the build ~30 MB heavier for no visible gain.

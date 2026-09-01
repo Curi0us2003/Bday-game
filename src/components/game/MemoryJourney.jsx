@@ -14,17 +14,17 @@ const findMemory = (name) => {
 }
 
 const memories = [
-  { file: '01.jpg', eyebrow: 'THE BEGINNING', text: 'This is where it began, the familiar top right?', placeholder: 'Add an early memory' },
-  { file: '02.jpg', eyebrow: 'THE LITTLE THINGS', text: 'Not everything worth remembering was important. Some of my favourite memories are just... us.', placeholder: 'Add a random / funny memory' },
-  { file: '03.jpg', eyebrow: 'THE PLACES', text: 'You introduced me to so many places. And somehow, the places became memories because you were there.', placeholder: 'Add a place you visited together' },
-  { file: '04.jpg', eyebrow: 'THE FOOD', text: 'A completely normal meal somehow became a memory I still remember.', placeholder: 'Add a food / restaurant photo' },
-  { file: '05.jpg', eyebrow: 'YOU', text: 'I have taken an embarrassing number of pictures of you.', placeholder: 'Add a favourite photo of him' },
-  { file: '06.jpg', eyebrow: 'MORE YOU', text: 'You have no idea how many ordinary moments you have made special just by being there.', placeholder: 'Add another candid photo' },
-  { file: '07.jpg', eyebrow: 'US', text: 'And then there are these. The ones I keep coming back to.', placeholder: 'Add a favourite photo of you two' },
-  { file: '08.jpg', eyebrow: 'THE CHAOS', text: 'A lot of questionable decisions were made along the way. I would make most of them again.', placeholder: 'Add a goofy memory' },
-  { file: '09.jpg', eyebrow: 'THE GOOD DAYS', text: 'Some days were loud. Some were quiet. I loved having you in both.', placeholder: 'Add another shared memory' },
-  { file: '10.jpg', eyebrow: 'SOMEHOW', text: 'Look at us now. We have actually come a pretty long way, haven’t we?', placeholder: 'Add a recent photo together' },
-  { file: '11.jpg', eyebrow: 'STILL US', text: 'And somehow, after all the little moments, here we are.', placeholder: 'Add your favourite recent picture' },
+  { file: '01.webp', eyebrow: 'THE BEGINNING', text: 'This is where it began, the familiar top right?', placeholder: 'Add an early memory' },
+  { file: '02.webp', eyebrow: 'THE LITTLE THINGS', text: 'Not everything worth remembering was important. Some of my favourite memories are just... us.', placeholder: 'Add a random / funny memory' },
+  { file: '03.webp', eyebrow: 'THE PLACES', text: 'You introduced me to so many places. And somehow, the places became memories because you were there.', placeholder: 'Add a place you visited together' },
+  { file: '04.webp', eyebrow: 'THE FOOD', text: 'A completely normal meal somehow became a memory I still remember.', placeholder: 'Add a food / restaurant photo' },
+  { file: '05.webp', eyebrow: 'YOU', text: 'I have taken an embarrassing number of pictures of you.', placeholder: 'Add a favourite photo of him' },
+  { file: '06.webp', eyebrow: 'MORE YOU', text: 'You have no idea how many ordinary moments you have made special just by being there.', placeholder: 'Add another candid photo' },
+  { file: '07.webp', eyebrow: 'US', text: 'And then there are these. The ones I keep coming back to.', placeholder: 'Add a favourite photo of you two' },
+  { file: '08.webp', eyebrow: 'THE CHAOS', text: 'A lot of questionable decisions were made along the way. I would make most of them again.', placeholder: 'Add a goofy memory' },
+  { file: '09.webp', eyebrow: 'THE GOOD DAYS', text: 'Some days were loud. Some were quiet. I loved having you in both.', placeholder: 'Add another shared memory' },
+  { file: '10.webp', eyebrow: 'SOMEHOW', text: 'Look at us now. We have actually come a pretty long way, haven’t we?', placeholder: 'Add a recent photo together' },
+  { file: '11.webp', eyebrow: 'STILL US', text: 'And somehow, after all the little moments, here we are.', placeholder: 'Add your favourite recent picture' },
 ]
 
 const SpeakerIcon = ({ muted }) => (
@@ -55,7 +55,7 @@ const SpeakerIcon = ({ muted }) => (
   </svg>
 )
 
-export default function MemoryJourney() {
+export default function MemoryJourney({ onFinish }) {
   const [index, setIndex] = useState(0)
   const [letterOpen, setLetterOpen] = useState(false)
   const [musicPlaying, setMusicPlaying] = useState(false)
@@ -162,7 +162,6 @@ export default function MemoryJourney() {
     if (index < memories.length - 1) {
       setIndex((value) => value + 1)
     } else {
-      // The letter is the final scene. Nothing follows it.
       setLetterOpen(true)
     }
   }
@@ -391,6 +390,10 @@ export default function MemoryJourney() {
               >
                 Now smile. I made all of this just to see you do that.
               </motion.p>
+
+              <button type="button" className="memory-next" onClick={() => onFinish?.()}>
+                COMPLETE THE ARCHIVE →
+              </button>
             </motion.div>
           </motion.section>
         )}

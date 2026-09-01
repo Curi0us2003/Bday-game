@@ -3,17 +3,17 @@ import { motion } from 'framer-motion'
 import { Play, Volume2, VolumeX, Maximize, X, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import mainVideo from '../../assets/netflix/main-video.mp4'
 import sinners from '../../assets/posters/sinners.jpg'
-import prestige from '../../assets/posters/prestige.jpg'
+import prestige from '../../assets/posters/prestige.webp'
 import hatingGame from '../../assets/posters/hating_game.webp'
-import midnight from '../../assets/posters/midnight.jpg'
-import chef from '../../assets/posters/chef.jpg'
+import midnight from '../../assets/posters/midnight.webp'
+import chef from '../../assets/posters/chef.webp'
 import batman from '../../assets/posters/batman.webp'
 import johnWick from '../../assets/posters/john.avif'
 import aboutTime from '../../assets/posters/about.webp'
-import pulpFiction from '../../assets/posters/pulp.jpg'
+import pulpFiction from '../../assets/posters/pulp.webp'
 import casinoRoyale from '../../assets/posters/casino.webp'
-import inglorious from '../../assets/posters/inglorius.jpg'
-import gameOfThrones from '../../assets/posters/got.jpg'
+import inglorious from '../../assets/posters/inglorius.webp'
+import gameOfThrones from '../../assets/posters/got.webp'
 
 const posterModules = import.meta.glob('../../assets/posters/*', {
   eager: true,
@@ -42,16 +42,16 @@ const posterTitleOverrides = {
   'caddo.avif': 'Caddo Lake',
   'crazy.avif': 'Crazy, Stupid, Love.',
   'demon.avif': 'Demon Slayer: Kimetsu no Yaiba',
-  'footloose.jpg': 'Footloose',
-  'got.jpg': 'Game of Thrones',
-  'hail.jpg': 'Hail Mary',
+  'footloose.webp': 'Footloose',
+  'got.webp': 'Game of Thrones',
+  'hail.webp': 'Hail Mary',
   'hits.avif': 'The Greatest Hits',
-  'jerry.jpg': 'Jerry Maguire',
+  'jerry.webp': 'Jerry Maguire',
   'jump.avif': '21 Jump Street',
-  'liberal.jpg': 'The Liberal Arts',
+  'liberal.webp': 'The Liberal Arts',
   'mummy.webp': 'The Mummy',
-  'obsession.jpg': 'Obsession',
-  'oh_hi.jpg': 'Oh, Hi!',
+  'obsession.webp': 'Obsession',
+  'oh_hi.webp': 'Oh, Hi!',
   'rental.avif': 'The Rental Family',
   'tropic.webp': 'Tropical Thunder',
 }
@@ -242,7 +242,7 @@ export default function NetflixReward({ gameSong, onContinue }) {
             src={mainVideo}
             className="h-full w-full object-cover"
             playsInline
-            preload="auto"
+            preload="none"
             controlsList="nodownload noplaybackrate"
             onLoadedMetadata={() => syncCaptions(captions)}
             onError={() => setVideoError('VIDEO COULD NOT BE LOADED. CHECK THE MP4 FILE PATH.')}

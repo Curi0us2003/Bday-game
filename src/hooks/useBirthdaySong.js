@@ -25,6 +25,14 @@ export default function useBirthdaySong(src) {
     return audioRef.current
   }, [src, volume])
 
+  // Create the element (and start buffering) without playing, so a large
+  // theme file is ready by the time the user actually reaches its scene.
+  // Safe to call outside a user gesture — nothing is played here.
+  const preload = useCallback(() => {
+    const audio = getAudio()
+    if (audio) audio.preload = 'auto'
+  }, [getAudio])
+
   const play = useCallback(() => {
     const audio = getAudio()
     if (!audio) return
@@ -115,5 +123,5 @@ export default function useBirthdaySong(src) {
     setMuted(audio.muted)
   }, [])
 
-  return { status, muted, volume, play, pause, fadeIn, fadeOut, setVolume, toggleMute }
+  return { status, muted, volume, preload, play, pause, fadeIn, fadeOut, setVolume, toggleMute }
 }

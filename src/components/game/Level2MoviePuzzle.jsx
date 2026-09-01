@@ -10,6 +10,13 @@ const COLS = 12
 
 const XP_PER_ENTRY = 50
 
+// QWERTY keyboard layout (3 rows)
+const KEYBOARD_ROWS = [
+  'QWERTYUIOP',
+  'ASDFGHJKL',
+  'ZXCVBNM',
+]
+
 export default function Level2MoviePuzzle({ onComplete, startingXP = 0, gameSong }) {
   const entries = gameConfig.level2.entries
   const [selectedId, setSelectedId] = useState(entries[0].id)
@@ -75,6 +82,59 @@ export default function Level2MoviePuzzle({ onComplete, startingXP = 0, gameSong
   const totalSolved = solved.length
   const progress = Math.round((totalSolved / entries.length) * 100)
   const currentXP = startingXP + earnedXP
+
+  // ============================================================
+  // KEYBOARD INPUT LISTENER
+  // ============================================================
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (completed || solved.includes(selectedId)) return
+
+      const key = event.key.toUpperCase()
+
+      // Handle backspace
+      if (event.key === 'Backspace' || event.code === 'Backspace') {
+        event.preventDefault()
+        removeLetter()
+        return
+      }
+
+      // Handle Enter to check
+      if (event.key === 'Enter' || event.code === 'Enter') {
+        event.preventDefault()
+        checkSelected()
+        return
+      }
+
+      // Handle letter input (A-Z only)
+      if (key.length === 1 && key >= 'A' && key <= 'Z') {
+        event.preventDefault()
+        
+        // Inline letter addition to ensure we use latest state values
+        const selectedEntry = entries.find((entry) => entry.id === selectedId)
+        if (!selectedEntry) return
+        
+        const currentValue = values[selectedId] || ''
+        if (currentValue.length >= selectedEntry.answer.length) return
+        
+        setValues((prev) => ({
+          ...prev,
+          [selectedId]: `${currentValue}${key}`,
+        }))
+
+        setStatus((prev) => ({
+          ...prev,
+          [selectedId]: Array(selectedEntry.answer.length).fill(null),
+        }))
+
+        setMessage('')
+        return
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedId, completed, solved, entries])
 
   const chooseEntry = (id) => {
     const entry = entries.find((item) => item.id === id)
@@ -419,19 +479,27 @@ export default function Level2MoviePuzzle({ onComplete, startingXP = 0, gameSong
                 {Array.from({ length: selected.answer.length }).map((_, index) => {
                   const letter = selectedValue[index]
                   const cellStatus = status[selected.id]?.[index]
+                  const isCursor = index === selectedValue.length // Next position to fill
 
                   return (
                     <div
                       key={index}
-                      className={`w-7 h-9 border flex items-center justify-center font-mono text-sm ${
+                      className={`w-7 h-9 border flex items-center justify-center font-mono text-sm relative transition-all ${
                         cellStatus === 'correct'
                           ? 'border-green-400/70 text-green-400 bg-green-400/10'
                           : cellStatus === 'wrong'
                             ? 'border-crimson-bright/70 text-crimson-bright bg-crimson/10'
-                            : 'border-gold/30 text-bone bg-black/50'
+                            : isCursor
+                              ? 'border-gold/70 text-gold bg-gold/20 ring-1 ring-gold/40'
+                              : 'border-gold/30 text-bone bg-black/50'
                       }`}
                     >
                       {letter || ''}
+                      {isCursor && (
+                        <span className="absolute inset-0 flex items-center justify-center">
+                          <span className="w-0.5 h-5 bg-gold animate-pulse" />
+                        </span>
+                      )}
                     </div>
                   )
                 })}
@@ -465,8 +533,36 @@ export default function Level2MoviePuzzle({ onComplete, startingXP = 0, gameSong
                 </div>
               </div>
 
-              <div className="grid grid-cols-7 gap-1.5">
-                {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter) => (
+              <div className="grid grid-cols-10 gap-1.5">
+                {KEYBOARD_ROWS[0].split('').map((letter) => (
+                  <button
+                    key={letter}
+                    type="button"
+                    onClick={() => addLetter(letter)}
+                    disabled={solved.includes(selected.id)}
+                    className="h-8 border border-gold/15 bg-black/40 text-ash font-mono text-[10px] hover:border-gold/60 hover:text-gold transition-all disabled:opacity-20"
+                  >
+                    {letter}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-9 gap-1.5 mt-1">
+                {KEYBOARD_ROWS[1].split('').map((letter) => (
+                  <button
+                    key={letter}
+                    type="button"
+                    onClick={() => addLetter(letter)}
+                    disabled={solved.includes(selected.id)}
+                    className="h-8 border border-gold/15 bg-black/40 text-ash font-mono text-[10px] hover:border-gold/60 hover:text-gold transition-all disabled:opacity-20"
+                  >
+                    {letter}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1.5 mt-1">
+                {KEYBOARD_ROWS[2].split('').map((letter) => (
                   <button
                     key={letter}
                     type="button"

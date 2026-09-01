@@ -5,12 +5,17 @@ export const birthdayConfig = {
   name: 'Tushar',
   age: 25,
 
-  distance: '1,543.43 km',
+  // The great-circle distance and the bearing are computed from the real
+  // coordinates in src/data/indiaGeo.js -- only the road figure is a
+  // published approximation, so it lives here where it can be edited.
   from: 'Bangalore',
   to: 'Kolkata',
+  roadKm: 1870,
 
   openingLine: "I couldn't hand you a present this year.",
   openingLine2: 'So I made you one.',
+  openingKicker: 'BIRTHDAY PROTOCOL',
+  openingPrompt: 'A small world built for one person. Press the gift when the route is complete.',
 
   cakeTitle: 'Make a wish.',
 

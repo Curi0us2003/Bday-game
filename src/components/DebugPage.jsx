@@ -1,17 +1,20 @@
 import { useLocation } from 'react-router-dom'
+import DebugMenu from './DebugMenu.jsx'
 import GameHUD from './game/GameHUD.jsx'
 import MissionTransition from './game/MissionTransition.jsx'
 import Level1DatePuzzle from './game/Level1DatePuzzle.jsx'
 import Level2MoviePuzzle from './game/Level2MoviePuzzle.jsx'
 import NetflixReward from './game/NetflixReward.jsx'
-import Level3Transition from './game/Level3Transition.jsx'
-import Level3Game from './game/Level3Game.jsx'
+import CarRaceGame from './game/CarRaceGame.jsx'
 import Level3Ending from './game/Level3Ending.jsx'
 import MemoryJourney from './game/MemoryJourney.jsx'
-import { characters } from '../data/characterData.js'
 
 export default function DebugPage() {
   const { pathname } = useLocation()
+
+  if (pathname === '/debug' || pathname === '/debug/') {
+    return <DebugMenu />
+  }
 
   if (pathname === '/debug/level1') {
     return <Level1DatePuzzle onComplete={(result) => console.log('[DEBUG] Level 1 complete:', result)} />
@@ -45,17 +48,8 @@ export default function DebugPage() {
     return <NetflixReward />
   }
 
-  if (pathname === '/debug/level3-transition') {
-    return (
-      <Level3Transition
-        character={characters.find((item) => item.id === 'shadow-weaver')}
-        onComplete={() => (window.location.href = '/debug/level3')}
-      />
-    )
-  }
-
   if (pathname === '/debug/level3') {
-    return <Level3Game characterId="shadow-weaver" startingXP={1250} onComplete={(result) => console.log('[DEBUG] Level 3 complete:', result)} />
+    return <CarRaceGame startingXP={1250} onComplete={(result) => console.log('[DEBUG] Level 3 complete:', result)} />
   }
 
   if (pathname === '/debug/level3-ending') {
