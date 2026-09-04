@@ -14,6 +14,7 @@ import gotTheme from '../../assets/sounds/got-theme.mp3'
 // so they load on the way in instead of up front.
 const CakeScene = lazy(() => import('./CakeScene.jsx'))
 const Level1DatePuzzle = lazy(() => import('../game/Level1DatePuzzle.jsx'))
+const Level1Memory = lazy(() => import('../game/Level1Memory.jsx'))
 const Level2MoviePuzzle = lazy(() => import('../game/Level2MoviePuzzle.jsx'))
 const NetflixReward = lazy(() => import('../game/NetflixReward.jsx'))
 const CarRaceGame = lazy(() => import('../game/CarRaceGame.jsx'))
@@ -29,6 +30,7 @@ const RESUMABLE = new Set([
   'mission',
   'transition',
   'level1',
+  'level1memory',
   'cake',
   'level2prep',
   'level2',
@@ -91,7 +93,7 @@ export default function BirthdayExperience() {
     window.__archive = {
       phase,
       phases: [
-        'opening', 'awakening', 'mission', 'transition', 'level1', 'cake',
+        'opening', 'awakening', 'mission', 'transition', 'level1', 'level1memory', 'cake',
         'level2prep', 'level2', 'level2reward', 'netflix', 'level3', 'final',
         'memories', 'complete',
       ],
@@ -123,7 +125,7 @@ export default function BirthdayExperience() {
   return (
     <>
       {/* Every screen except the opening carries the player card */}
-      {phase !== 'opening' && <FlippablePlayerCard />}
+      {phase !== 'opening' && phase !== 'netflix' && phase !== 'memories' && <FlippablePlayerCard />}
 
       <Suspense fallback={<SceneLoader />}>
         <>
@@ -159,8 +161,16 @@ export default function BirthdayExperience() {
               gameSong={gameSong}
               onComplete={(result) => {
                 setMemoryResult(result ?? { solved: false, attempts: 0, xp: 0 })
-                setPhase('cake')
+                setPhase('level1memory')
               }}
+            />
+          )}
+
+          {phase === 'level1memory' && (
+            <Level1Memory
+              key="level1-memory"
+              gameSong={gameSong}
+              onContinue={() => setPhase('cake')}
             />
           )}
 
