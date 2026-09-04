@@ -54,9 +54,7 @@ export default function Level3Ending({ xp = 0, distance = 0, onContinue }) {
           transition={{ delay: 1.8, duration: 1 }}
           className="mt-10 text-xl leading-relaxed text-white/70 md:text-2xl"
         >
-          The game, at least.
-          <br />
-          Somehow, you also won my heart. ❤️
+          The way you won my heart. ❤️
         </motion.p>
 
         <motion.div

@@ -39,7 +39,6 @@ export default function Level1DatePuzzle({ onComplete, gameSong }) {
     const currentAttempt = attempts + 1
     setAttempts(currentAttempt)
 
-    // Correct answer: don't show the memory here. Move to a dedicated page.
     if (value === ANSWER) {
       setResults(Array(6).fill('correct'))
       setLocked(true)
@@ -64,7 +63,7 @@ export default function Level1DatePuzzle({ onComplete, gameSong }) {
     setShake(true)
     setTimeout(() => setShake(false), 500)
 
-    // Fourth failed attempt: reveal the answer, then move to the memory page.
+    // Fourth failed attempt: reveal the answer, then show the memory.
     if (currentAttempt >= MAX_ATTEMPTS) {
       setLocked(true)
       setMessage(

@@ -15,13 +15,13 @@ const findMemory = (name) => {
 
 const memories = [
   { file: '01.webp', eyebrow: 'THE BEGINNING', text: 'This is where it began, the familiar top right?', placeholder: 'Add an early memory' },
-  { file: '02.webp', eyebrow: 'THE LITTLE THINGS', text: 'Not everything worth remembering was important. Some of my favourite memories are just... us.', placeholder: 'Add a random / funny memory' },
+  { file: '02.webp', eyebrow: 'THE LITTLE THINGS', text: 'Random spots became our go to places, our spots.', placeholder: 'Add a random / funny memory' },
   { file: '03.webp', eyebrow: 'THE PLACES', text: 'You introduced me to so many places. And somehow, the places became memories because you were there.', placeholder: 'Add a place you visited together' },
-  { file: '04.webp', eyebrow: 'THE FOOD', text: 'A completely normal meal somehow became a memory I still remember.', placeholder: 'Add a food / restaurant photo' },
-  { file: '05.webp', eyebrow: 'YOU', text: 'I have taken an embarrassing number of pictures of you.', placeholder: 'Add a favourite photo of him' },
+  { file: '04.webp', eyebrow: 'THE FOOD', text: 'Good food tasted even better with you beside me.', placeholder: 'Add a food / restaurant photo' },
+  { file: '05.webp', eyebrow: 'YOU', text: 'I have no idea from when became goofy around you became normal.', placeholder: 'Add a favourite photo of him' },
   { file: '06.webp', eyebrow: 'MORE YOU', text: 'You have no idea how many ordinary moments you have made special just by being there.', placeholder: 'Add another candid photo' },
   { file: '07.webp', eyebrow: 'US', text: 'And then there are these. The ones I keep coming back to.', placeholder: 'Add a favourite photo of you two' },
-  { file: '08.webp', eyebrow: 'THE CHAOS', text: 'A lot of questionable decisions were made along the way. I would make most of them again.', placeholder: 'Add a goofy memory' },
+  { file: '08.webp', eyebrow: 'THE CHAOS', text: 'Life started feeling a little easier since you were there.', placeholder: 'Add a goofy memory' },
   { file: '09.webp', eyebrow: 'THE GOOD DAYS', text: 'Some days were loud. Some were quiet. I loved having you in both.', placeholder: 'Add another shared memory' },
   { file: '10.webp', eyebrow: 'SOMEHOW', text: 'Look at us now. We have actually come a pretty long way, haven’t we?', placeholder: 'Add a recent photo together' },
   { file: '11.webp', eyebrow: 'STILL US', text: 'And somehow, after all the little moments, here we are.', placeholder: 'Add your favourite recent picture' },
